@@ -55,3 +55,4 @@ resource "aws_s3_bucket_versioning" "this" {
     status = var.versioning_configuration_enabled
   }
 }
+
