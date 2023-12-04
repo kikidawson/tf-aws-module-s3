@@ -3,4 +3,4 @@
 
 ./test/.terraform
 ./test/.terraform.lock.hcl
-./test/
+./test/backend.tf

@@ -1,10 +1,4 @@
 resource "aws_s3_bucket" "this" {
-# checkov:skip=CKV_AWS_144:TODO enable cross region replication
-# checkov:skip=CKV2_AWS_62:TODO event notifications
-# checkov:skip=CKV2_AWS_65:TODO ACL disabled
-# checkov:skip=CKV_AWS_18:TODO configure logging
-# checkov:skip=CKV2_AWS_61:TODO configure lifecycle
-
   bucket        = var.name
   force_destroy = var.force_destroy
 
