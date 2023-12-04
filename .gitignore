@@ -1,0 +1,6 @@
+.terraform.lock.hcl
+.terraform
+
+./test/.terraform
+./test/.terraform.lock.hcl
+./test/
