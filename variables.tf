@@ -25,6 +25,7 @@ variable "ignore_public_acls" {
 variable "kms_key_arn" {
   description = "The ARN of the KMS key used to encrypt pbjects in the bucket."
   type        = string
+  default     = null
 }
 
 variable "policy_document_json" {
