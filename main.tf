@@ -13,13 +13,20 @@ resource "aws_s3_bucket" "this" {
   }
 }
 
+resource "aws_s3_bucket_policy" "this" {
+  bucket = aws_s3_bucket.this.id
+  policy = var.policy_document_json
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "this" {
   bucket = aws_s3_bucket.this.id
 
   rule {
+    bucket_key_enabled = var.sse_bucket_key_enabled
+
     apply_server_side_encryption_by_default {
-      kms_master_key_id = var.kms_key_arn
-      sse_algorithm     = "aws:kms"
+      kms_master_key_id = local.sse_aws_kms ? var.kms_key_arn : null
+      sse_algorithm     = var.sse_algorithm
     }
   }
 }
@@ -54,4 +61,22 @@ resource "aws_s3_bucket_versioning" "this" {
   versioning_configuration {
     status = var.versioning_configuration_enabled
   }
+}
+
+resource "aws_s3_bucket_website_configuration" "this" {
+  count = local.enable_static_website ? 1 : 0
+
+  bucket = aws_s3_bucket.this.id
+
+  index_document {
+    suffix = var.website_file_name
+  }
+}
+
+resource "aws_s3_object" "static_webpage" {
+  count = local.enable_static_website ? 1 : 0
+
+  bucket = aws_s3_bucket.this.id
+  key    = var.website_file_name
+  source = "./src/${var.website_file_name}"
 }

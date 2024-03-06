@@ -27,6 +27,11 @@ variable "kms_key_arn" {
   type        = string
 }
 
+variable "policy_document_json" {
+  description = "The JSON policy document to be attached as the bucket policy."
+  type        = string
+}
+
 variable "restrict_public_buckets" {
   description = "Whether S3 should restrict public bucket policies for this bucket."
   type        = bool
@@ -49,6 +54,23 @@ variable "object_ownership" {
   }
 }
 
+variable "sse_algorithm" {
+  description = "Server-side encryption algorithm to use. Valid values are AES256, aws:kms, and aws:kms:dsse"
+  type        = string
+  default     = "aws:kms"
+
+  validation {
+    condition     = contains(["AES256", "aws:kms", "aws:kms:dsse"], var.sse_algorithm)
+    error_message = "SSE Algorithm must be one of the following; AES256, aws:kms, and aws:kms:dsse."
+  }
+}
+
+variable "sse_bucket_key_enabled" {
+  description = "Whether or not to use Amazon S3 Bucket Keys for SSE-KMS."
+  type        = bool
+  default     = null
+}
+
 variable "versioning_configuration_enabled" {
   description = "Versioning state of the bucket."
   type        = string
@@ -58,4 +80,10 @@ variable "versioning_configuration_enabled" {
     condition     = contains(["Enabled", "Suspended", "Disabled"], var.versioning_configuration_enabled)
     error_message = "Versioning configuration must be one of the following; Enabled, Suspended or Disabled."
   }
+}
+
+variable "website_file_name" {
+  description = "The file name of the index page for the S3 static website."
+  type        = string
+  default     = null
 }
